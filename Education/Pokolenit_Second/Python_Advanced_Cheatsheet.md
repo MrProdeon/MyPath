@@ -372,38 +372,131 @@ def f(*args, **kwargs):
 
 f(1, 2, x=3)
 ```
+# 15.3 Парадигмы программирования
+- Императивное программирование: пошаговое выполнение инструкций
+- Объектно-ориентированное программирование (ООП): объекты, классы, наследование
+- Функциональное программирование: функции как объекты, отсутствие побочных эффектов
 
-### 15.3 Парадигмы программирования
-- Императивное, объектно-ориентированное, функциональное
+## 15.4 Функции как объекты
+- Функции можно присваивать переменным
+- Можно передавать функции как аргументы другим функциям
+- Функции могут возвращать другие функции
 
-### 15.4 Функции как объекты
-- Можно присваивать переменным, передавать, возвращать
+```python
+def greet(name):
+    return f"Hello, {name}!"
 
-### 15.5 Функции высшего порядка
-- Функции, принимающие или возвращающие функции
+say_hello = greet  # присваивание функции переменной
+print(say_hello("Alice"))
 
-### 15.6 Встроенные функции map(), filter(), reduce()
-- `map(func, iterable)`, `filter(func, iterable)`, `reduce(func, iterable)`
+def apply_func(func, value):
+    return func(value)
 
-### 15.7 Анонимные функции. Часть 1
-- `lambda`
+print(apply_func(greet, "Bob"))
+```
 
-### 15.8 Анонимные функции. Часть 2
+## 15.5 Функции высшего порядка
+- Функции, принимающие функции в аргументы или возвращающие функции
 
-### 15.9 Встроенные функции any(), all(), zip(), enumerate()
+```python
+def make_multiplier(n):
+    def multiplier(x):
+        return x * n
+    return multiplier
 
----
+times3 = make_multiplier(3)
+print(times3(5))  # 15
+```
+
+## 15.6 Встроенные функции map(), filter(), reduce()
+- `map(func, iterable)` — применяет func к каждому элементу iterable и возвращает итератор с результатами
+- `filter(func, iterable)` — возвращает итератор из элементов iterable, для которых func возвращает True
+- `reduce(func, iterable)` — применяет функцию func последовательно к элементам iterable, сводя их к одному значению (нужно импортировать из functools)
+
+```python
+from functools import reduce
+
+nums = [1, 2, 3, 4]
+
+squared = list(map(lambda x: x**2, nums))
+evens = list(filter(lambda x: x % 2 == 0, nums))
+sum_all = reduce(lambda a, b: a + b, nums)
+
+print(squared)  # [1, 4, 9, 16]
+print(evens)    # [2, 4]
+print(sum_all)  # 10
+```
+
+## 15.7 Анонимные функции. Часть 1
+- `lambda` — создание анонимных (безымянных) функций
+
+```python
+add = lambda x, y: x + y
+print(add(3, 4))  # 7
+```
+
+## 15.8 Анонимные функции. Часть 2
+- Использование lambda с функциями высшего порядка, сортировкой, фильтрацией
+
+```python
+nums = [1, 2, 3, 4]
+print(sorted(nums, key=lambda x: -x))  # [4, 3, 2, 1]
+```
+
+## 15.9 Встроенные функции any(), all(), zip(), enumerate()
+- `any(iterable)` — True, если хотя бы один элемент истинен
+- `all(iterable)` — True, если все элементы истинны
+- `zip(*iterables)` — объединяет несколько итерируемых в кортежи по элементам
+- `enumerate(iterable, start=0)` — возвращает пары (индекс, элемент)
+
+```python
+print(any([False, True, False]))  # True
+print(all([True, True, False]))   # False
+
+a = [1, 2, 3]
+b = ['a', 'b', 'c']
+print(list(zip(a, b)))            # [(1, 'a'), (2, 'b'), (3, 'c')]
+
+for i, val in enumerate(['x', 'y', 'z'], start=1):
+    print(i, val)
+```
 
 ## 17. Работа с файлами
 
 ### 17.1 Файловый ввод и вывод
-- Открытие файлов: `open(filename, mode)`
-- Чтение и запись
+- Открытие файла: `open(filename, mode)`
+- Режимы: `'r'` — чтение, `'w'` — запись (перезапись), `'a'` — добавление, `'b'` — бинарный режим
+- Обязательно закрывать файл (`file.close()`) или использовать `with`
+
+```python
+with open("file.txt", "w") as f:
+    f.write("Hello, file!
+")
+```
 
 ### 17.2 Работа с текстовыми файлами. Часть 1
-- Чтение построчно, запись
+- Чтение строк: `read()`, `readline()`, `readlines()`
+- Запись строк: `write()`, `writelines()`
+
+```python
+with open("file.txt", "r") as f:
+    content = f.read()
+print(content)
+```
 
 ### 17.3 Работа с текстовыми файлами. Часть 2
+- Чтение файла построчно через цикл
+
+```python
+with open("file.txt", "r") as f:
+    for line in f:
+        print(line.strip())
+```
 
 ### 17.4 Работа с текстовыми файлами. Часть 3
+- Работа с кодировками: параметр `encoding` в `open()`
 
+```python
+with open("file.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+```
