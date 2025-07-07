@@ -23,6 +23,7 @@
 ### Пока выбираю куда пойти ❌
 ---
 
+
 На данный момент имею такие достижения :  
 ![alt text](Screenshot_1.png)
 ![alt text](Screenshot_2.png)
