@@ -26,6 +26,17 @@ def get_dict(lst, progress = None):
         if progress is None or line.get('Прогресс') == progress:
             print(line)
 
+def get_tasks_by_progress(task_list : list, progress : str = None) -> list:
+    if progress is None:
+        return task_list
+    return [task for task in task_list if task.get('Прогресс') == progress]
+
+def print_tasks(task_list: list) -> None:
+    """Выводит задачи в консоль"""
+    for i, task in enumerate(task_list, 1):
+        status = '✅' if task['Прогресс'] == 'Выполнено' else '❌'
+        print(f"[{i}] {status} {task['Дело']} (до {task['Время']}) [пометка: {task['Пометка']}]")
+
 
 
 
@@ -42,9 +53,14 @@ def main() -> None:
         if not end_or_continue():
             what_progress = input('Вывести все задачи или только невыполненные? в - все, н - невыполненные ---> ')
             if what_progress == 'в':
-                get_dict(toDoList)
+                tasks = get_tasks_by_progress(toDoList)
+            elif what_progress == 'н':
+                tasks = get_tasks_by_progress(toDoList, progress='Не выполнено')
             else:
-                get_dict(toDoList, progress='Не выполнено')
+                print('Неверный ввод.')
+                tasks = []
+
+            print_tasks(tasks)
             break
 
 
