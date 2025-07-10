@@ -54,9 +54,34 @@ def save_tasks(task_list, filename='tasks.json'):
         json.dump(task_list,fp=file, ensure_ascii=False, indent=4,)
 
 
+def load_tasks(filename='tasks.json'):
+    try:
+        with open(filename, 'r', encoding='utf8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+
+
+
 
 def main() -> None:
     """Основная функция, которая собирает результаты выполнения остальных и выводит результат"""
+    global toDoList, next_id
+
+    toDoList = load_tasks()
+
+
+    lst_id = []
+    for i in toDoList:
+        lst_id.append(i['id'])
+    try:
+        max_id = max(lst_id)
+        next_id = max_id
+    except ValueError:
+        max_id = 0
+
     while True:
         case : str = input('Введите ваше дело : ')
         time : str = input('До какого времени выполнить (Синтаксис = 01.01.2001 ) : ')
