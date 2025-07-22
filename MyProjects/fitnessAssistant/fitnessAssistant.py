@@ -1,5 +1,3 @@
-#Проект на стадии разработки
-
 import json
 import math
 
@@ -38,11 +36,14 @@ def calories_spent_per_day(bmr, steps, train, digestion, daily_activity):
     """
     Функция для расчета потраченных калорий за день
     bmr - базовый обмен
-    steps -
-    train -
-    digestion -
-    daily_activity -
+    steps - шаги
+    train - тренировка
+    digestion - переваривание
+    daily_activity - бытовая активность
     """
+    total = bmr
+    total += sum([steps, train, digestion, daily_activity])
+    return total
 
 
 def get_calories_for_steps(steps, weight):
@@ -52,7 +53,10 @@ def get_calories_for_steps(steps, weight):
 
 
 def get_calories_for_train(part, tonnage, press_sets, rest_time, sets, walk_speed):
+    """Функция для расчета потраченных калорий за тренировку"""
     epoc_input = input('Насколько тяжелая была тренировка? 1 - легкая, 2 - тяжелая ---> ')
+    while epoc_input not in ('1', '2'):
+        epoc_input = input('Насколько тяжелая была тренировка? 1 - легкая, 2 - тяжелая ---> ')
     epoc = 100 if epoc_input == '2' else 70
     if part in ('грудьбицепс', 'спинатрицепс'):
         k = 0.031
@@ -61,6 +65,41 @@ def get_calories_for_train(part, tonnage, press_sets, rest_time, sets, walk_spee
     calories = (tonnage * k) + (( rest_time * sets * walk_speed) * 0.045) + (press_sets * 6) + epoc
 
     return calories
+
+def get_digestion(eat_calories):
+    """Функция для расчета потраченных калорий на переваривание пищи"""
+    return eat_calories * 0.10
+
+def get_daily_activity():
+    """Функция дял примерного расчета бытовой активности."""
+    level_activity = {'1' : 150, '2' : 300, '3' : 550}
+    daily_activity = input('Много ли сегодня было бытовой активности ? 1 - мало (Практически весь день сидеть или лежать, редкая ходьба)\n2 - средне (Ходьба по дому, уборка, готовка в обычном темпе)\n3 - много (Большая активность по дому, генеральная уборка, перетаскивание вещей...)')
+    while daily_activity not in ('1', '2', '3'):
+        daily_activity = input('Много ли сегодня было бытовой активности ? 1 - мало, 2 - средне, 3 - много')
+    return level_activity[daily_activity]
+
+
+def get_eated_calories(eated_calories):
+    """Функция для приема информации о количестве съеденных калорий"""
+    return eated_calories
+
+
+def get_macros(weight, func_per_day):
+    """Функция для расчета БЖУ. Для всех целей выбрано одинаковое значение:
+    2гр белка на 1кг веса тела и 1гр жира на 1кг веса тела"""
+    protein = weight * 2
+    protein_calories = protein * 4
+    fat = 1 * weight
+    fat_calories = fat * 9
+    carbs_calories = func_per_day() - protein_calories - fat_calories
+    carbs = carbs_calories / 4
+    return f'Белки - {protein}, Жиры - {fat}, Углеводы - {carbs}'
+
+def get_tarder_calories(func_calories_per_day):
+    """Функция для расчета дефицита и профицита"""
+    return f'Для дефицита калорий необходимо съесть - {func_calories_per_day - 500}\nДля профицита калорий необходимо съесть - {func_calories_per_day + 300}'
+
+
 
 
 
