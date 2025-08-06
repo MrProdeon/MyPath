@@ -32,10 +32,10 @@
 
 
 Мои достижения :  
-![alt text](Screenshot_1.png)
-![alt text](Screenshot_2.png)
-![alt text](Screenshot_3.png)
-![alt text](Screenshot_4.png)
-![alt text](Screenshot_5.png)
-![alt text](Screenshot_6.png)
+![alt text](Screenshots/Screenshot_1.png)
+![alt text](Screenshots/Screenshot_2.png)
+![alt text](Screenshots/Screenshot_3.png)
+![alt text](Screenshots/Screenshot_4.png)
+![alt text](Screenshots/Screenshot_5.png)
+![alt text](Screenshots/Screenshot_6.png)
 ---
